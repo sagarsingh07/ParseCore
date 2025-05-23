@@ -79,10 +79,11 @@ style.configure("TLabel", background="#f0f0f0", font=("Segoe UI", 12))
 frame = ttk.Frame(root, padding=20)
 frame.pack(fill=tk.BOTH, expand=True)
 
-# Input label and entry
+# Added label "Enter Expression:"
 input_label = ttk.Label(frame, text="Enter Expression:", font=("Segoe UI", 14, "bold"))
 input_label.pack(anchor=tk.W, pady=(0, 5))
 
+# Input entry
 entry = ttk.Entry(frame, width=50)
 entry.pack(fill=tk.X, pady=(0, 15))
 entry.focus()
