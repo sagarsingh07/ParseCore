@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'DIVIDE EQUALS ID LPAREN MINUS NUMBER PLUS RPAREN TIMESstatement : ID EQUALS expressionstatement : expressionexpression : expression PLUS expression\n                  | expression MINUS expression\n                  | expression TIMES expression\n                  | expression DIVIDE expressionexpression : LPAREN expression RPARENexpression : NUMBERexpression : ID'
+_lr_signature = 'DIVIDE EQUALS LPAREN MINUS NAME NUMBER PLUS RPAREN TIMESstatement : NAME EQUALS expressionstatement : expressionexpression : expression PLUS term\n                  | expression MINUS termexpression : termterm : term TIMES factor\n            | term DIVIDE factorterm : factorfactor : NUMBER\n              | NAMEfactor : LPAREN expression RPAREN'
     
-_lr_action_items = {'ID':([0,4,6,7,8,9,10,],[2,12,12,12,12,12,12,]),'LPAREN':([0,4,6,7,8,9,10,],[4,4,4,4,4,4,4,]),'NUMBER':([0,4,6,7,8,9,10,],[5,5,5,5,5,5,5,]),'$end':([1,2,3,5,12,13,14,15,16,17,18,],[0,-9,-2,-8,-9,-1,-3,-4,-5,-6,-7,]),'EQUALS':([2,],[6,]),'PLUS':([2,3,5,11,12,13,14,15,16,17,18,],[-9,7,-8,7,-9,7,7,7,7,7,-7,]),'MINUS':([2,3,5,11,12,13,14,15,16,17,18,],[-9,8,-8,8,-9,8,8,8,8,8,-7,]),'TIMES':([2,3,5,11,12,13,14,15,16,17,18,],[-9,9,-8,9,-9,9,9,9,9,9,-7,]),'DIVIDE':([2,3,5,11,12,13,14,15,16,17,18,],[-9,10,-8,10,-9,10,10,10,10,10,-7,]),'RPAREN':([5,11,12,14,15,16,17,18,],[-8,18,-9,-3,-4,-5,-6,-7,]),}
+_lr_action_items = {'NAME':([0,7,8,9,10,11,12,],[2,14,14,14,14,14,14,]),'NUMBER':([0,7,8,9,10,11,12,],[6,6,6,6,6,6,6,]),'LPAREN':([0,7,8,9,10,11,12,],[7,7,7,7,7,7,7,]),'$end':([1,2,3,4,5,6,14,15,16,17,18,19,20,],[0,-10,-2,-5,-8,-9,-10,-1,-3,-4,-6,-7,-11,]),'EQUALS':([2,],[8,]),'TIMES':([2,4,5,6,14,16,17,18,19,20,],[-10,11,-8,-9,-10,11,11,-6,-7,-11,]),'DIVIDE':([2,4,5,6,14,16,17,18,19,20,],[-10,12,-8,-9,-10,12,12,-6,-7,-11,]),'PLUS':([2,3,4,5,6,13,14,15,16,17,18,19,20,],[-10,9,-5,-8,-9,9,-10,9,-3,-4,-6,-7,-11,]),'MINUS':([2,3,4,5,6,13,14,15,16,17,18,19,20,],[-10,10,-5,-8,-9,10,-10,10,-3,-4,-6,-7,-11,]),'RPAREN':([4,5,6,13,14,16,17,18,19,20,],[-5,-8,-9,20,-10,-3,-4,-6,-7,-11,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,4,6,7,8,9,10,],[3,11,13,14,15,16,17,]),}
+_lr_goto_items = {'statement':([0,],[1,]),'expression':([0,7,8,],[3,13,15,]),'term':([0,7,8,9,10,],[4,4,4,16,17,]),'factor':([0,7,8,9,10,11,12,],[5,5,5,5,5,18,19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,13 +27,15 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statement","S'",1,None,None,None),
-  ('statement -> ID EQUALS expression','statement',3,'p_statement_assign','parser.py',7),
-  ('statement -> expression','statement',1,'p_statement_expr','parser.py',11),
-  ('expression -> expression PLUS expression','expression',3,'p_expression_binop','parser.py',15),
-  ('expression -> expression MINUS expression','expression',3,'p_expression_binop','parser.py',16),
-  ('expression -> expression TIMES expression','expression',3,'p_expression_binop','parser.py',17),
-  ('expression -> expression DIVIDE expression','expression',3,'p_expression_binop','parser.py',18),
-  ('expression -> LPAREN expression RPAREN','expression',3,'p_expression_group','parser.py',22),
-  ('expression -> NUMBER','expression',1,'p_expression_number','parser.py',26),
-  ('expression -> ID','expression',1,'p_expression_id','parser.py',30),
+  ('statement -> NAME EQUALS expression','statement',3,'p_statement_assign','parser.py',5),
+  ('statement -> expression','statement',1,'p_statement_expr','parser.py',9),
+  ('expression -> expression PLUS term','expression',3,'p_expression_binop','parser.py',13),
+  ('expression -> expression MINUS term','expression',3,'p_expression_binop','parser.py',14),
+  ('expression -> term','expression',1,'p_expression_term','parser.py',18),
+  ('term -> term TIMES factor','term',3,'p_term_binop','parser.py',22),
+  ('term -> term DIVIDE factor','term',3,'p_term_binop','parser.py',23),
+  ('term -> factor','term',1,'p_term_factor','parser.py',27),
+  ('factor -> NUMBER','factor',1,'p_factor_num_or_name','parser.py',31),
+  ('factor -> NAME','factor',1,'p_factor_num_or_name','parser.py',32),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_group','parser.py',36),
 ]
